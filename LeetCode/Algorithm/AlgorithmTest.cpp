@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<unordered_set>
+#include<unordered_map>
 using namespace std;
 struct ListNode {
 	int val;
@@ -15,7 +16,7 @@ class Solution
 		#pragma region 1.两数之和
 		vector<int> twoSum(vector<int>& nums, int target)
 		{
-			for (int i = 0; i < nums.size(); i++)
+			/*for (int i = 0; i < nums.size(); i++)
 			{
 				for (int j = i + 1; j < nums.size(); j++)
 				{
@@ -24,6 +25,17 @@ class Solution
 						return { i, j };
 					}
 				}
+			}
+			return {};*/
+			unordered_map<int,int> hashTable;
+			for (int i = 0; i < nums.size(); i++)
+			{
+				auto it = hashTable.find(target - nums[i]);
+				if (it != hashTable.end())
+				{
+					return { it->second,i };
+				}
+				hashTable[nums[i]] = i;
 			}
 			return {};
 		}
@@ -35,7 +47,7 @@ class Solution
 			int carry = 0;
 			while (l1 || l2)
 			{
-				int n1 = l1 ? l1->val : 0, n2 = l2 ? l2->val : 0;
+				size_t n1 = l1 ? l1->val : 0, n2 = l2 ? l2->val : 0;
 				int sum = n1 + n2 + carry;
 				if (head == nullptr)
 				{
@@ -113,6 +125,104 @@ class Solution
 			}
 		}
 		#pragma endregion
+		#pragma region 5.最长回文字串
+		string longestPalindrome(string s) 
+		{
+			/*int len = 0;
+			string ret = "";
+			for (int i = 0; i < s.length(); i++)
+			{
+				for (int j = s.length() - 1; j >= i; j--) 
+				{
+					int left = i, right = j;
+					int isPalindrome = true;
+					while (left <= right)
+					{
+						if (s[left] != s[right])
+						{
+							isPalindrome = false;
+							break;
+						}
+						left++; right--;
+					}
+					if (isPalindrome)
+					{
+						if (j - i + 1 > len)
+						{
+							len = j - i + 1;
+							ret = s.substr(i, j - i + 1);
+						}
+					}
+				}
+			}
+			return ret;*/
+			//中心扩展算法
+			int start = 0, end = 0;
+			for (int i = 0; i < s.length(); i++)
+			{
+				auto [left1, right1] = expendAroundCenter(s, i, i);
+				auto [left2, right2] = expendAroundCenter(s, i, i + 1);
+				if (right1 - left1 > end - start)
+				{
+					start = left1;
+					end = right1;
+				}
+				if (right2 - left2 > end - start)
+				{
+					start = left2;
+					end = right2;
+				}
+			}
+			return s.substr(start, end - start + 1);
+		}
+		pair<int, int> expendAroundCenter(string s, int left, int right)
+		{
+			while (left >= 0 && right <= s.length() && s[left] == s[right])
+			{
+				left--, right++;
+			}
+			return { left + 1,right - 1 };
+		}
+		#pragma endregion
+		#pragma region 6.Z字变换
+		/*示例 1：
+			输入：s = "PAYPALISHIRING", numRows = 3
+			输出："PAHNAPLSIIGYIR"
+			P   A   H   N
+			A P L S I I G
+			Y   I   R   
+		  示例 2：
+			输入：s = "PAYPALISHIRING", numRows = 4
+			输出："PINALSIGYAHRPI"
+			P     I    N
+			A   L S  I G
+			Y A   H R
+			P     I
+		  示例 3：
+			输入：s = "A", numRows = 1
+			输出："A"*/
+		string convert(string s, int numRows) 
+		{
+			if (numRows == 1 || numRows >= s.length()) 
+			{
+				return s;
+			}
+			string ret;
+			int t = numRows * 2 - 2;
+			for (int i = 0; i < numRows; i++)
+			{
+				for (int j = 0; j + i < s.length(); j += t)
+				{
+					ret += s[j + i];
+					if (i > 0 && i < numRows - 1 && j + t - i < s.length())
+					{
+						ret += s[j + t - i];
+					}
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 
@@ -149,6 +259,14 @@ int main()
 	vector<int> nums2 = { 2,5,6 };
 	double med = solution.findMedianSortedArrays(nums1, nums2);
 	cout << med << endl;
+	#pragma endregion
+	#pragma region 5.最长回文字串
+	string palindrome = solution.longestPalindrome("bbcabacb");
+	cout << palindrome << endl;
+	#pragma endregion
+	#pragma region 6.Z字变换
+	string convertRet = solution.convert("PAYPALISHIRING", 3);
+	cout << convertRet << endl;
 	#pragma endregion
 
 	return 0;
