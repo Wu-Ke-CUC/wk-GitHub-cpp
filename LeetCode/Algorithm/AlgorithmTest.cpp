@@ -185,22 +185,6 @@ class Solution
 		}
 		#pragma endregion
 		#pragma region 6.Z字变换
-		/*示例 1：
-			输入：s = "PAYPALISHIRING", numRows = 3
-			输出："PAHNAPLSIIGYIR"
-			P   A   H   N
-			A P L S I I G
-			Y   I   R   
-		  示例 2：
-			输入：s = "PAYPALISHIRING", numRows = 4
-			输出："PINALSIGYAHRPI"
-			P     I    N
-			A   L S  I G
-			Y A   H R
-			P     I
-		  示例 3：
-			输入：s = "A", numRows = 1
-			输出："A"*/
 		string convert(string s, int numRows) 
 		{
 			if (numRows == 1 || numRows >= s.length()) 
@@ -223,12 +207,78 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 7.整数反转
+		int reverse(int x) 
+		{
+			/*int count = 0;
+			int ret = 0;
+			vector<int> ints(100);
+			while (x)
+			{
+				ints[count++] = x % 10;
+				x /= 10;
+			}
+			int index = count - 1;
+			for (int i = 0; i < count; i++)
+			{
+				if (ret > INT32_MAX - ints[i] * pow(10, index)||ret<INT32_MIN- ints[i] * pow(10, index))
+				{
+					return 0;
+				}
+				ret += (ints[i] * pow(10, index--));
+			}
+			return ret;*/
+			int ret = 0;
+			while (x)
+			{
+				if (ret > INT32_MAX / 10 || ret < INT32_MIN / 10)
+				{
+					return 0;
+				}
+				int digit = x % 10;
+				x /= 10;
+				ret = ret * 10 + digit;
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 8.atoi
+		int myAtoi(string s) {
+			if (s == "")
+			{
+				return 0;
+			}
+			int ret = 0;
+			int index = 0;
+			int symbol = 1;
+			while (s[index] < '0' || s[index] > '9' && index < s.size())
+			{
+				if (s[index] == ' ')
+				{
+					return 0;
+				}
+				index++;
+			}
+			if (index > 0 && s[index - 1] == '-')
+			{
+				symbol = -1;
+			}
+			while (s[index] >= '0' && s[index] <= '9' && index<s.size())
+			{
+				if (ret < INT32_MAX / 10)
+				{
+					ret = ret * 10 + (s[index++] - '0');
+				}
+			}
+			return ret * symbol;
+		}
+		#pragma endregion
 
 };
 
 int main()
 {
-	#pragma region 1.两数之和
+#pragma region 1.两数之和
 	vector<int> nums = { 2, 7, 11, 15 };
 	int target = 9;
 	Solution solution;
@@ -238,8 +288,8 @@ int main()
 		cout << index << " ";
 	}
 	cout << endl;
-	#pragma endregion
-	#pragma region 2.两数相加
+#pragma endregion
+#pragma region 2.两数相加
 	ListNode* l1 = new ListNode(8, new ListNode(6, new ListNode(5)));
 	ListNode* l2 = new ListNode(2, new ListNode(3, new ListNode(4)));
 	ListNode* ret = solution.addTwoNumbers(l1, l2);
@@ -249,25 +299,34 @@ int main()
 		ret = ret->next;
 	}
 	cout << endl;
-	#pragma endregion
-	#pragma region 3.无重复字符的最长字串
+#pragma endregion
+#pragma region 3.无重复字符的最长字串
 	int maxLength = solution.lengthOfLongestSubstring("abcacbb");
 	cout << maxLength << endl;
-	#pragma endregion
-	#pragma region 4.寻找两个正序数组的中位数
+#pragma endregion
+#pragma region 4.寻找两个正序数组的中位数
 	vector<int> nums1 = { 1,2,4 };
 	vector<int> nums2 = { 2,5,6 };
 	double med = solution.findMedianSortedArrays(nums1, nums2);
 	cout << med << endl;
-	#pragma endregion
-	#pragma region 5.最长回文字串
+#pragma endregion
+#pragma region 5.最长回文字串
 	string palindrome = solution.longestPalindrome("bbcabacb");
 	cout << palindrome << endl;
-	#pragma endregion
-	#pragma region 6.Z字变换
+#pragma endregion
+#pragma region 6.Z字变换
 	string convertRet = solution.convert("PAYPALISHIRING", 3);
 	cout << convertRet << endl;
-	#pragma endregion
+#pragma endregion
+#pragma region 7.整数反转
+	int reverse1 = solution.reverse(123);
+	int reverse2 = solution.reverse(INT32_MAX);
+	cout << reverse1 << " " << reverse2 << endl;
+#pragma endregion
+#pragma region 8.atoi
+	int atoi = solution.myAtoi("as-0123as");
+	cout << atoi << endl;
+#pragma endregion
 
 	return 0;
 }
