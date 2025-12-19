@@ -210,24 +210,6 @@ class Solution
 		#pragma region 7.整数反转
 		int reverse(int x) 
 		{
-			/*int count = 0;
-			int ret = 0;
-			vector<int> ints(100);
-			while (x)
-			{
-				ints[count++] = x % 10;
-				x /= 10;
-			}
-			int index = count - 1;
-			for (int i = 0; i < count; i++)
-			{
-				if (ret > INT32_MAX - ints[i] * pow(10, index)||ret<INT32_MIN- ints[i] * pow(10, index))
-				{
-					return 0;
-				}
-				ret += (ints[i] * pow(10, index--));
-			}
-			return ret;*/
 			int ret = 0;
 			while (x)
 			{
@@ -271,6 +253,67 @@ class Solution
 				}
 			}
 			return ret * symbol;
+		}
+		#pragma endregion
+		#pragma region 9.回文数
+		bool isPalindrome(int x) 
+		{
+			if (x < 0)return false;
+			int ret = 0;
+			int temp = x;
+			while (temp)
+			{
+				int digit = temp % 10;
+				temp /= 10;
+				ret = ret * 10 + digit;
+				if (ret > INT32_MAX / 10) return false;
+			}
+			return ret == x ? true : false;
+		}
+		#pragma endregion
+		#pragma region 10.正则表达式匹配 （非自主）
+		bool isMatch(string s, string p) 
+		{
+			int m = s.size();
+			int n = p.size();
+
+			// dp[i][j] 表示 s[0..i-1] 是否能匹配 p[0..j-1]
+			vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
+
+			dp[0][0] = true;
+
+			// 处理 p 形如 a* a*b* 能匹配空串的情况
+			for (int j = 2; j <= n; j++)
+			{
+				if (p[j - 1] == '*')
+					dp[0][j] = dp[0][j - 2];
+			}
+
+			for (int i = 1; i <= m; i++)
+			{
+				for (int j = 1; j <= n; j++)
+				{
+					// 普通字符 或 '.'
+					if (p[j - 1] == '.' || p[j - 1] == s[i - 1])
+					{
+						dp[i][j] = dp[i - 1][j - 1];
+					}
+					// '*'
+					else if (p[j - 1] == '*')
+					{
+						// 匹配 0 次
+						dp[i][j] = dp[i][j - 2];
+
+						// 匹配 1 次或多次
+						if (p[j - 2] == '.' || p[j - 2] == s[i - 1])
+						{
+							dp[i][j] = dp[i][j] || dp[i - 1][j];
+						}
+					}
+				}
+			}
+
+			return dp[m][n];
 		}
 		#pragma endregion
 
@@ -326,6 +369,12 @@ int main()
 #pragma region 8.atoi
 	int atoi = solution.myAtoi("as-0123as");
 	cout << atoi << endl;
+#pragma endregion
+#pragma region 9.回文数
+	cout << solution.isPalindrome(12321) << endl;
+#pragma endregion
+#pragma region 10.正则表达式匹配
+	cout << solution.isMatch("aab", "c*a*b");
 #pragma endregion
 
 	return 0;
