@@ -123,6 +123,25 @@ class Solution
 			{
 				return (addArray[temp / 2 - 1] + addArray[temp / 2]) / (double)2;
 			}
+			/*int l1 = nums1.size(), l2 = nums2.size();
+			int sum = l1 + l2;
+			int index1 = 0, index2 = 0;
+			int n1 = 0, n2 = 0;
+			while (index1 + index2 <= sum / 2)
+			{
+				if (nums1[index1] < nums2[index2])
+				{
+					index2++;
+					if (index1 + index2 == sum / 2 - 1)
+					{
+						n1 = nums2[index2];
+					}
+					else if (index1 + index2 == sum / 2)
+					{
+
+					}
+				}
+			}*/
 		}
 		#pragma endregion
 		#pragma region 5.最长回文字串
@@ -316,65 +335,139 @@ class Solution
 			return dp[m][n];
 		}
 		#pragma endregion
+		#pragma region 11.装水最多的容器
+		int maxArea(vector<int>& height) {
+			//方法1
+			/*int ret = 0;
+			for (int i = 0; i < height.size(); i++)
+			{
+				for (int j = i; j < height.size(); j++)
+				{
+					int v = min(height[i], height[j]) * (j - i);
+					ret = max(ret, v);
+				}
+			}
+			return ret;*/
+			//方法2
+			int left = 0, right = height.size() - 1;
+			int ret = 0;
+			while (left < right)
+			{
+				int tempS = min(height[left], height[right]) * (right - left);
+				ret = max(ret, tempS);
+				height[left] < height[right] ? left++ : right--;
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 12.整数转罗马数字
+		string intToRoman(int num) {
+			pair<int, string> valueSymbol[] = { {1000, "M"},{900,  "CM"},{500,  "D"},{400,  "CD"},{100,  "C"},
+												{90,   "XC"},{50,   "L"},{40,   "XL"},{10,   "X"},{9,    "IX"},
+												{5,    "V"},{4,    "IV"},{1,    "I"},};
+			string ret = "";
+			for (const auto& [value, symbol] : valueSymbol)
+			{
+				while (num >= value)
+				{
+					ret += symbol;
+					num -= value;
+				}
+				if (num == 0)break;
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 
 int main()
 {
-#pragma region 1.两数之和
-	vector<int> nums = { 2, 7, 11, 15 };
-	int target = 9;
 	Solution solution;
-	vector<int> result = solution.twoSum(nums, target);
-	for (int index : result)
+#pragma region 1.两数之和
 	{
-		cout << index << " ";
+		vector<int> nums = { 2, 7, 11, 15 };
+		int target = 9;
+		vector<int> result = solution.twoSum(nums, target);
+		for (int index : result)
+		{
+			cout << index << " ";
+		}
+		cout << endl;
 	}
-	cout << endl;
 #pragma endregion
 #pragma region 2.两数相加
-	ListNode* l1 = new ListNode(8, new ListNode(6, new ListNode(5)));
-	ListNode* l2 = new ListNode(2, new ListNode(3, new ListNode(4)));
-	ListNode* ret = solution.addTwoNumbers(l1, l2);
-	while (ret)
 	{
-		cout << ret->val;
-		ret = ret->next;
+		ListNode* l1 = new ListNode(8, new ListNode(6, new ListNode(5)));
+		ListNode* l2 = new ListNode(2, new ListNode(3, new ListNode(4)));
+		ListNode* ret = solution.addTwoNumbers(l1, l2);
+		while (ret)
+		{
+			cout << ret->val;
+			ret = ret->next;
+		}
+		cout << endl;
 	}
-	cout << endl;
 #pragma endregion
 #pragma region 3.无重复字符的最长字串
-	int maxLength = solution.lengthOfLongestSubstring("abcacbb");
-	cout << maxLength << endl;
+	{
+		int maxLength = solution.lengthOfLongestSubstring("abcacbb");
+		cout << maxLength << endl;
+	}
 #pragma endregion
 #pragma region 4.寻找两个正序数组的中位数
-	vector<int> nums1 = { 1,2,4 };
-	vector<int> nums2 = { 2,5,6 };
-	double med = solution.findMedianSortedArrays(nums1, nums2);
-	cout << med << endl;
+	{
+		vector<int> nums1 = { 1,2,4 };
+		vector<int> nums2 = { 2,5,6 };
+		double med = solution.findMedianSortedArrays(nums1, nums2);
+		cout << med << endl;
+	}
 #pragma endregion
 #pragma region 5.最长回文字串
-	string palindrome = solution.longestPalindrome("bbcabacb");
-	cout << palindrome << endl;
+	{
+		string palindrome = solution.longestPalindrome("bbcabacb");
+		cout << palindrome << endl;
+	}
 #pragma endregion
 #pragma region 6.Z字变换
-	string convertRet = solution.convert("PAYPALISHIRING", 3);
-	cout << convertRet << endl;
+	{
+		string convertRet = solution.convert("PAYPALISHIRING", 3);
+		cout << convertRet << endl;
+	}
 #pragma endregion
 #pragma region 7.整数反转
-	int reverse1 = solution.reverse(123);
-	int reverse2 = solution.reverse(INT32_MAX);
-	cout << reverse1 << " " << reverse2 << endl;
+	{
+		int reverse1 = solution.reverse(123);
+		int reverse2 = solution.reverse(INT32_MAX);
+		cout << reverse1 << " " << reverse2 << endl;
+	}
 #pragma endregion
 #pragma region 8.atoi
-	int atoi = solution.myAtoi("as-0123as");
-	cout << atoi << endl;
+	{
+		int atoi = solution.myAtoi("as-0123as");
+		cout << atoi << endl;
+	}
 #pragma endregion
 #pragma region 9.回文数
-	cout << solution.isPalindrome(12321) << endl;
+	{
+		cout << solution.isPalindrome(12321) << endl;
+	}
 #pragma endregion
 #pragma region 10.正则表达式匹配
-	cout << solution.isMatch("aab", "c*a*b");
+	{
+		cout << solution.isMatch("aab", "c*a*b") << endl;
+	}
+#pragma endregion
+#pragma region 11.装水最多的容器
+	{
+		vector<int> height = { 1,8,6,2,5,4,8,3,7 };
+		cout << solution.maxArea(height) << endl;
+	}
+#pragma endregion
+#pragma region 12.整数转罗马数字
+	{
+		cout << solution.intToRoman(3999) << endl;
+	}
 #pragma endregion
 
 	return 0;
