@@ -378,6 +378,53 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 13.罗马数字转整数
+		int romanToInt(string s) {
+			unordered_map<char, int> symbolValues = {{'I', 1},{'V', 5},{'X', 10},{'L', 50},
+													 {'C', 100},{'D', 500},{'M', 1000},};
+			int ret = 0;
+			for (int i = 0; i < s.length(); i++)
+			{
+				int value = symbolValues[s[i]];
+				if (i < s.length() - 1 && value < symbolValues[s[i + 1]])
+				{
+					ret -= value;
+				}
+				else
+				{
+					ret += value;
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 14.最长公共前缀
+		string longestCommonPrefix(vector<string>& strs) {
+			string ret = "";
+			int index = 0;
+			while (true)
+			{
+				char letter;
+				if (strs[0][index]) letter = strs[0][index];
+				else break;
+				bool isCommon = true;
+				for (int i = 0; i < strs.size(); i++)
+				{
+					if (strs[i][index] != letter)
+					{
+						isCommon = false;
+					}
+				}
+				if (isCommon)
+				{
+					ret += letter;
+					index++;
+				}
+				else break;
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 
@@ -467,6 +514,17 @@ int main()
 #pragma region 12.整数转罗马数字
 	{
 		cout << solution.intToRoman(3999) << endl;
+	}
+#pragma endregion
+#pragma region 13.罗马数字转整数
+	{
+		cout << solution.romanToInt("MCMXCIV") << endl;
+	}
+#pragma endregion
+#pragma region 14.最长公共前缀
+	{
+		vector<string> strs = { "flower","flow","flight" };
+		cout << solution.longestCommonPrefix(strs) << endl;
 	}
 #pragma endregion
 
