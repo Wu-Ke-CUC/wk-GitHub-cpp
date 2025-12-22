@@ -2,6 +2,7 @@
 #include<vector>
 #include<unordered_set>
 #include<unordered_map>
+#include<algorithm>
 using namespace std;
 struct ListNode {
 	int val;
@@ -425,6 +426,98 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 15.三数之和
+		vector<vector<int>> threeSum(vector<int>& nums) {
+			int n = nums.size();
+			sort(nums.begin(), nums.end());
+			vector<vector<int>> ret;
+			for (int first = 0; first < n - 2; first++)
+			{
+				if (first > 0 && nums[first] == nums[first - 1])
+				{
+					continue;
+				}
+				int third = n - 1;
+				for (int second = first + 1; second < n - 1; second++)
+				{
+					if (second > first + 1 && nums[second] == nums[second - 1])
+					{
+						continue;
+					}
+					while (second < third && nums[first] + nums[second] + nums[third]>0)
+					{
+						third--;
+					}
+					if (second == third)break;
+					if (nums[first] + nums[second] + nums[third] == 0)
+					{
+						ret.push_back({ nums[first] , nums[second] , nums[third] });
+					}
+					/*for (int third = n - 1; third > second; third--)
+					{
+						if (third > second + 1 && nums[third] == nums[third - 1])
+						{
+							continue;
+						}
+						if (nums[first] + nums[second] + nums[third] == 0)
+						{
+							ret.push_back({ nums[first] , nums[second] , nums[third] });
+						}
+					}*/
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 16.最接近的三数之和
+		int threeSumClosest(vector<int>& nums, int target) {
+			int n = nums.size();
+			sort(nums.begin(), nums.end());
+			int ret = 1e7;
+			for (int first = 0; first < n - 2; first++)
+			{
+				if (first > 0 && nums[first] == nums[first - 1])
+				{
+					continue;
+				}
+				/*for (int second = first + 1; second < n - 1; second++)
+				{
+					for (int third = n - 1; third > second; third--)
+					{
+						if (third > second + 1 && nums[third] == nums[third - 1])
+						{
+							continue;
+						}
+						if (abs(target - ret) > abs(target - (nums[first] + nums[second] + nums[third])))
+						{
+							ret = nums[first] + nums[second] + nums[third];
+						}
+					}
+				}*/
+				int left = first + 1, right = n - 1;
+				while (left < right)
+				{
+					int sum = nums[first] + nums[left] + nums[right];
+					if (sum == target)return target;
+					if (abs(target - ret) > abs(target - sum))
+					{
+						ret = sum;
+					}
+					if (sum > target)
+					{
+						while (left < right && nums[right - 1] == nums[right])right--;
+						right--;
+					}
+					else if (sum < target)
+					{
+						while (left < right && nums[left + 1] == nums[left])left++;
+						left++;
+					}
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 
@@ -525,6 +618,27 @@ int main()
 	{
 		vector<string> strs = { "flower","flow","flight" };
 		cout << solution.longestCommonPrefix(strs) << endl;
+	}
+#pragma endregion
+#pragma region 15.三数之和
+	{
+		vector<int> nums = { -1,0,1,2,-1,-4 };
+		vector<vector<int>> ret = solution.threeSum(nums);
+		for (auto array : ret)
+		{
+			for (auto num : array)
+			{
+				cout << num << " ";
+			}
+			cout << endl;
+		}
+	}
+#pragma endregion
+#pragma region 16.最接近的三数之和
+	{
+		vector<int> nums = { -1,2,1,-4 };
+		int ret = solution.threeSumClosest(nums, 1);
+		cout << ret << endl;
 	}
 #pragma endregion
 
