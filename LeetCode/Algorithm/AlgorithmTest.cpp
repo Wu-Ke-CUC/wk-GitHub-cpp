@@ -518,6 +518,72 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 17.电话号码的字母组合
+		vector<string> letterCombinations(string digits) {
+			pair<int, vector<string>> symbolValue[] = {{2,{"a","b","c"}},{3,{"d","e","f"}},{4,{"g","h","i"}},{5,{"j","k","l"}},
+												{6,{"m","n","o"}},{7,{"p","q","r","s"}},{8,{"t","u","v"}},{9,{"w","x","y","z"}} };
+			vector<int> ints;
+			for(char digit : digits )
+			{
+				ints.push_back(digit - '0');
+			}
+			vector<string> ret = symbolValue[ints[0] - 2].second;
+			for (int i = 1; i < ints.size(); i++)
+			{
+				ret = letterPair(ret, symbolValue[ints[i]-2].second);
+			}
+			return ret;
+		}
+		vector<string> letterPair(vector<string> s1, vector<string> s2)
+		{
+			vector<string> ret;
+			for (int i = 0; i < s1.size(); i++)
+			{
+				for (int j = 0; j < s2.size(); j++)
+				{
+					ret.push_back(s1[i] + s2[j]);
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 18.四数之和
+		vector<vector<int>> fourSum(vector<int>& nums, int target) {
+			int n = nums.size();
+			sort(nums.begin(), nums.end());
+			vector<vector<int>> ret;
+			for (int first = 0; first < n - 3; first++)
+			{
+				if (first > 0 && nums[first] == nums[first - 1])
+				{
+					continue;
+				}
+				int third = n - 1;
+				for (int second = first + 1; second < n - 2; second++)
+				{
+					if (second > first + 1 && nums[second] == nums[second - 1])
+					{
+						continue;
+					}
+					int third = second + 1, fourth = n - 1;
+					while (third < fourth)
+					{
+						long long sum = (long long)nums[first] + nums[second] + nums[third] + nums[fourth];
+						if (sum == target)
+						{
+							ret.push_back({ nums[first] , nums[second] , nums[third] , nums[fourth] });
+							while (third < fourth && nums[third] == nums[third + 1])third++;
+							while (third < fourth && nums[fourth] == nums[fourth - 1])fourth--;
+							third++, fourth--;
+						}
+						if (sum > target)fourth--;
+						if (sum < target)third++;
+					}
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 
@@ -639,6 +705,30 @@ int main()
 		vector<int> nums = { -1,2,1,-4 };
 		int ret = solution.threeSumClosest(nums, 1);
 		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 17.电话号码的字母组合
+	{
+		vector<string> ret = solution.letterCombinations("23");
+		for (auto s : ret)
+		{
+			cout << s << " " ;
+		}
+		cout << endl;
+	}
+#pragma endregion
+#pragma region 18.四数之和
+	{
+		vector<int> nums = { -5,-4,4,5 };
+		vector<vector<int>> ret = solution.fourSum(nums, 0);
+		for (auto ints : ret)
+		{
+			for (auto num : ints)
+			{
+				cout << num << " ";
+			}
+			cout << endl;
+		}
 	}
 #pragma endregion
 
