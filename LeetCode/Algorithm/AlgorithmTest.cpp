@@ -3,6 +3,7 @@
 #include<unordered_set>
 #include<unordered_map>
 #include<algorithm>
+#include<stack>
 using namespace std;
 struct ListNode {
 	int val;
@@ -584,6 +585,49 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 19.删除链表的倒数第N个结点
+		ListNode* removeNthFromEnd(ListNode* head, int n) {
+			if (head == NULL)return NULL;
+			ListNode* temp = new ListNode(0, head);
+			int num = 0;
+			ListNode* temp1 = head;
+			while (temp1)
+			{
+				temp1 = temp1->next;
+				num++;
+			}
+			if (n > num)return head;
+			ListNode* temp2 = temp;
+			for (int i = 0; i < num - n; i++)
+			{
+				temp2 = temp2->next;
+			}
+			ListNode* del = temp2->next;
+			temp2->next = temp2->next->next;
+			delete del;
+			ListNode* ret = temp->next;
+			delete temp;
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 20.有效的括号
+		bool isValid(string s) {
+			stack<char> stk;
+			for (char c : s)
+			{
+				if (c == '(')stk.push(')');
+				else if (c == '[')stk.push(']');
+				else if (c == '{')stk.push('}');
+				else
+				{
+					if (stk.empty() || stk.top() != c)
+						return false;
+					stk.pop();
+				}
+			}
+			return stk.empty();
+		}
+		#pragma endregion
 
 };
 
@@ -729,6 +773,18 @@ int main()
 			}
 			cout << endl;
 		}
+	}
+#pragma endregion
+#pragma region 19.删除链表的倒数第N个结点
+	{
+		ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(3,new ListNode(4,new ListNode(5)))));
+		ListNode* ret = solution.removeNthFromEnd(l1, 3);
+		cout << ret->val << endl;
+	}
+#pragma endregion
+#pragma region 20.有效的括号
+	{
+		cout << solution.isValid("") << endl;
 	}
 #pragma endregion
 
