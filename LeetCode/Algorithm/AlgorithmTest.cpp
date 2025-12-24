@@ -125,25 +125,6 @@ class Solution
 			{
 				return (addArray[temp / 2 - 1] + addArray[temp / 2]) / (double)2;
 			}
-			/*int l1 = nums1.size(), l2 = nums2.size();
-			int sum = l1 + l2;
-			int index1 = 0, index2 = 0;
-			int n1 = 0, n2 = 0;
-			while (index1 + index2 <= sum / 2)
-			{
-				if (nums1[index1] < nums2[index2])
-				{
-					index2++;
-					if (index1 + index2 == sum / 2 - 1)
-					{
-						n1 = nums2[index2];
-					}
-					else if (index1 + index2 == sum / 2)
-					{
-
-					}
-				}
-			}*/
 		}
 		#pragma endregion
 		#pragma region 5.最长回文字串
@@ -587,7 +568,7 @@ class Solution
 		#pragma endregion
 		#pragma region 19.删除链表的倒数第N个结点
 		ListNode* removeNthFromEnd(ListNode* head, int n) {
-			if (head == NULL)return NULL;
+			/*if (head == NULL)return NULL;
 			ListNode* temp = new ListNode(0, head);
 			int num = 0;
 			ListNode* temp1 = head;
@@ -604,6 +585,25 @@ class Solution
 			}
 			ListNode* del = temp2->next;
 			temp2->next = temp2->next->next;
+			delete del;
+			ListNode* ret = temp->next;
+			delete temp;
+			return ret;*/
+			//快慢指针
+			if (head == NULL)return NULL;
+			ListNode* temp = new ListNode(0, head);
+			ListNode* fast = temp, * slow = temp;
+			for (int i = 0; i < n; i++)
+			{
+				fast = fast->next;
+			}
+			while (fast->next)
+			{
+				fast = fast->next;
+				slow = slow->next;
+			}
+			ListNode* del = slow->next;
+			slow->next = slow->next->next;
 			delete del;
 			ListNode* ret = temp->next;
 			delete temp;
@@ -626,6 +626,35 @@ class Solution
 				}
 			}
 			return stk.empty();
+		}
+		#pragma endregion
+		#pragma region 21.合并两个有序链表
+		ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+			ListNode* temp = new ListNode(0);
+			ListNode* ret = temp;
+			while (list1 && list2)
+			{
+				if (list1->val <= list2->val)
+				{
+					temp->next = list1;
+					temp = temp->next;
+					list1 = list1->next;
+				}
+				else if (list1->val > list2->val)
+				{
+					temp->next = list2;
+					temp = temp->next;
+					list2 = list2->next;
+				}
+			}
+			if (list1)temp->next = list1;
+			else if (list2)temp->next = list2;
+			return ret->next;
+		}
+		#pragma endregion
+		#pragma region 22.括号生成
+		vector<string> generateParenthesis(int n) {
+
 		}
 		#pragma endregion
 
@@ -778,13 +807,31 @@ int main()
 #pragma region 19.删除链表的倒数第N个结点
 	{
 		ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(3,new ListNode(4,new ListNode(5)))));
-		ListNode* ret = solution.removeNthFromEnd(l1, 3);
-		cout << ret->val << endl;
+		ListNode* ret = solution.removeNthFromEnd(l1, 4);
+		while (ret)
+		{
+			cout << ret->val << " ";
+			ret = ret->next;
+		}
+		cout << endl;
 	}
 #pragma endregion
 #pragma region 20.有效的括号
 	{
 		cout << solution.isValid("") << endl;
+	}
+#pragma endregion
+#pragma region 21.合并两个有序链表
+	{
+		ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(5)));
+		ListNode* l2 = new ListNode(0, new ListNode(3, new ListNode(4)));
+		ListNode* ret = solution.mergeTwoLists(l1, l2);
+		while (ret)
+		{
+			cout << ret->val << " ";
+			ret = ret->next;
+		}
+		cout << endl;
 	}
 #pragma endregion
 
