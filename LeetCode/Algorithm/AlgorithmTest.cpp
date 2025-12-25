@@ -654,7 +654,58 @@ class Solution
 		#pragma endregion
 		#pragma region 22.括号生成
 		vector<string> generateParenthesis(int n) {
-
+			dfs("", n, n);
+			return ret;
+		}
+		vector<string> ret;
+		void dfs(const string& str, int left, int right)
+		{
+			if (left < 0 || left > right)return;
+			if (left == 0 && right == 0)
+			{
+				ret.push_back(str);
+				return;
+			}
+			dfs(str + '(', left - 1, right);
+			dfs(str + ')', left, right - 1);
+		}
+		#pragma endregion
+		#pragma region 23.合并K个升序链表
+		ListNode* mergeKLists(vector<ListNode*>& lists) {
+			/*vector<int> numArray;
+			for (ListNode* list : lists)
+			{
+				while (list)
+				{
+					numArray.push_back(list->val);
+					list = list->next;
+				}
+			}
+			if (numArray.empty()) return nullptr;
+			sort(numArray.begin(), numArray.end());
+			ListNode* ret = new ListNode(0);
+			ListNode* temp = ret;
+			for (int i = 0; i < numArray.size(); i++)
+			{
+				temp->next = new ListNode(numArray[i]);
+				temp = temp->next;
+			}
+			return ret->next;*/
+			//分治法
+			if (lists.empty())return NULL;
+			while (lists.size() > 1)
+			{
+				vector<ListNode*> merge;
+				for (int i = 0; i < lists.size(); i += 2)
+				{
+					if (i + 1 < lists.size())
+						merge.push_back(mergeTwoLists(lists[i], lists[i + 1]));
+					else
+						merge.push_back(lists[i]);
+				}
+				lists = merge;
+			}
+			return lists[0];
 		}
 		#pragma endregion
 
@@ -826,6 +877,30 @@ int main()
 		ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(5)));
 		ListNode* l2 = new ListNode(0, new ListNode(3, new ListNode(4)));
 		ListNode* ret = solution.mergeTwoLists(l1, l2);
+		while (ret)
+		{
+			cout << ret->val << " ";
+			ret = ret->next;
+		}
+		cout << endl;
+	}
+#pragma endregion
+#pragma region 22.括号生成
+	{
+		vector<string> ret = solution.generateParenthesis(3);
+		for (string s : ret)
+		{
+			cout << s << "	";
+		}
+		cout<<endl;
+	}
+#pragma endregion
+#pragma region 23.合并K个升序链表
+	{
+		vector<ListNode*> lists = { new ListNode(1,new ListNode(4,new ListNode(5))),
+									new ListNode(1,new ListNode(3,new ListNode(4))),
+									new ListNode(2,new ListNode(6)) };
+		ListNode* ret = solution.mergeKLists(lists);
 		while (ret)
 		{
 			cout << ret->val << " ";
