@@ -708,6 +708,27 @@ class Solution
 			return lists[0];
 		}
 		#pragma endregion
+		#pragma region 24.两两交换链表中的节点
+		ListNode* swapPairs(ListNode* head) {
+			ListNode* dummy = new ListNode(0, head);
+			ListNode* cur = dummy;
+			while (cur->next && cur->next->next)
+			{
+				ListNode* temp1 = cur->next;
+				ListNode* temp2 = cur->next->next;
+				temp1->next = temp2->next;
+				temp2->next = temp1;
+				cur->next = temp2;
+				cur = cur->next->next;
+			}
+			return dummy->next;
+			/*if (!head || !head->next)return head;
+			ListNode* newhead = head->next;
+			head->next = swapPairs(newhead->next);
+			newhead->next = head;
+			return newhead;*/
+		}
+		#pragma endregion
 
 };
 
@@ -901,6 +922,18 @@ int main()
 									new ListNode(1,new ListNode(3,new ListNode(4))),
 									new ListNode(2,new ListNode(6)) };
 		ListNode* ret = solution.mergeKLists(lists);
+		while (ret)
+		{
+			cout << ret->val << " ";
+			ret = ret->next;
+		}
+		cout << endl;
+	}
+#pragma endregion
+#pragma region 24.两两交换链表中的节点
+	{
+		ListNode* list = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5,new ListNode(6))))));
+		ListNode* ret = solution.swapPairs(list);
 		while (ret)
 		{
 			cout << ret->val << " ";
