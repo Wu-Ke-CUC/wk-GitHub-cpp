@@ -691,6 +691,7 @@ class Solution
 				temp = temp->next;
 			}
 			return ret->next;*/
+
 			//分治法
 			if (lists.empty())return NULL;
 			while (lists.size() > 1)
@@ -727,6 +728,46 @@ class Solution
 			head->next = swapPairs(newhead->next);
 			newhead->next = head;
 			return newhead;*/
+		}
+		#pragma endregion
+		#pragma region 25.K个一组翻转链表
+		ListNode* reverseKGroup(ListNode* head, int k) {
+			if (head == NULL)return NULL;
+			vector<int> ints;
+			while (head)
+			{
+				ints.push_back(head->val);
+				head = head->next;
+			}
+			for (int i = 0; i + k <= ints.size(); i += k)
+			{
+				for (int j = 0; j < k / 2; j++)
+				{
+					swap(ints[i + j], ints[i + k - j - 1]);
+				}
+			}
+			ListNode* dummy = new ListNode(0);
+			ListNode* temp = dummy;
+			for (int i = 0; i < ints.size(); i++)
+			{
+				temp->next = new ListNode(ints[i]);
+				temp = temp->next;
+			}
+			return dummy->next;
+		}
+		#pragma endregion
+		#pragma region 26.删除有序数组中的重复项
+		int removeDuplicates(vector<int>& nums) {
+			if (nums.empty())return 0;
+			int index = 1;
+			for (int i = 1; i < nums.size(); i++)
+			{
+				if (nums[i] != nums[index - 1])
+				{
+					nums[index++] = nums[i];
+				}
+			}
+			return index;
 		}
 		#pragma endregion
 
@@ -940,6 +981,25 @@ int main()
 			ret = ret->next;
 		}
 		cout << endl;
+	}
+#pragma endregion
+#pragma region 25.K个一组翻转链表
+	{
+		ListNode* list = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5,new ListNode(6))))));
+		ListNode* ret = solution.reverseKGroup(list, 2);
+		while (ret)
+		{
+			cout << ret->val << " ";
+			ret = ret->next;
+		}
+		cout << endl;
+	}
+#pragma endregion
+#pragma region 26.26.删除有序数组中的重复项
+	{
+		vector<int> nums = { 1,2,3,3,3,4,4,5,6,7 };
+		int ret = solution.removeDuplicates(nums);
+		cout << ret << endl;
 	}
 #pragma endregion
 
