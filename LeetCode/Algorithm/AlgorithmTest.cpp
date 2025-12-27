@@ -759,15 +759,51 @@ class Solution
 		#pragma region 26.删除有序数组中的重复项
 		int removeDuplicates(vector<int>& nums) {
 			if (nums.empty())return 0;
-			int index = 1;
-			for (int i = 1; i < nums.size(); i++)
+			int slow = 1;
+			for (int fast = 1; fast < nums.size(); fast++)
 			{
-				if (nums[i] != nums[index - 1])
+				if (nums[fast] != nums[slow - 1])
 				{
-					nums[index++] = nums[i];
+					nums[slow++] = nums[fast];
 				}
 			}
-			return index;
+			return slow;
+		}
+		#pragma endregion
+		#pragma region 27.移除元素
+		int removeElement(vector<int>& nums, int val) {
+			if (nums.empty())return 0;
+			int slow = 0;
+			for (int fast = 0; fast < nums.size(); fast++)
+			{
+				if (nums[fast] != val)
+				{
+					nums[slow++] = nums[fast];
+				}
+			}
+			return slow;
+		}
+		#pragma endregion
+		#pragma region 28.找出字符串中第一个匹配的下标
+		int strStr(string haystack, string needle) {
+			int length1 = haystack.length();
+			int length2 = needle.length();
+			for (int i = 0; i < length1 - length2 + 1; i++)
+			{
+				if (haystack[i] == needle[0])
+				{
+					bool isMatch = true;
+					for (int j = 0; j < length2; j++)
+					{
+						if (haystack[i + j] != needle[j])
+						{
+							isMatch = false;
+						}
+					}
+					if (isMatch)return i;
+				}
+			}
+			return -1;
 		}
 		#pragma endregion
 
@@ -995,10 +1031,25 @@ int main()
 		cout << endl;
 	}
 #pragma endregion
-#pragma region 26.26.删除有序数组中的重复项
+#pragma region 26.删除有序数组中的重复项
 	{
 		vector<int> nums = { 1,2,3,3,3,4,4,5,6,7 };
 		int ret = solution.removeDuplicates(nums);
+		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 27.移除元素
+	{
+		vector<int> nums = { 1,2,3,3,3,4,4,5,6,7 };
+		int ret = solution.removeElement(nums, 3);
+		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 28.找出字符串中第一个匹配的下标
+	{
+		string s1 = "sadbutsad";
+		string s2 = "ad";
+		int ret = solution.strStr(s1, s2);
 		cout << ret << endl;
 	}
 #pragma endregion
