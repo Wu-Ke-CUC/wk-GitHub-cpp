@@ -806,6 +806,118 @@ class Solution
 			return -1;
 		}
 		#pragma endregion
+		#pragma region 29.两数相除 (非自主)
+		int divide(int dividend, int divisor) {
+			// 考虑被除数为最小值的情况
+			if (dividend == INT_MIN) {
+				if (divisor == 1) {
+					return INT_MIN;
+				}
+				if (divisor == -1) {
+					return INT_MAX;
+				}
+			}
+			// 考虑除数为最小值的情况
+			if (divisor == INT_MIN) {
+				return dividend == INT_MIN ? 1 : 0;
+			}
+			// 考虑被除数为 0 的情况
+			if (dividend == 0) {
+				return 0;
+			}
+
+			// 一般情况，使用二分查找
+			// 将所有的正数取相反数，这样就只需要考虑一种情况
+			bool rev = false;
+			if (dividend > 0) {
+				dividend = -dividend;
+				rev = !rev;
+			}
+			if (divisor > 0) {
+				divisor = -divisor;
+				rev = !rev;
+			}
+
+			// 快速乘
+			auto quickAdd = [](int y, int z, int x) {
+				// x 和 y 是负数，z 是正数
+				// 需要判断 z * y >= x 是否成立
+				int result = 0, add = y;
+				while (z) {
+					if (z & 1) {
+						// 需要保证 result + add >= x
+						if (result < x - add) {
+							return false;
+						}
+						result += add;
+					}
+					if (z != 1) {
+						// 需要保证 add + add >= x
+						if (add < x - add) {
+							return false;
+						}
+						add += add;
+					}
+					// 不能使用除法
+					z >>= 1;
+				}
+				return true;
+				};
+
+			int left = 1, right = INT_MAX, ans = 0;
+			while (left <= right) {
+				// 注意溢出，并且不能使用除法
+				int mid = left + ((right - left) >> 1);
+				bool check = quickAdd(divisor, mid, dividend);
+				if (check) {
+					ans = mid;
+					// 注意溢出
+					if (mid == INT_MAX) {
+						break;
+					}
+					left = mid + 1;
+				}
+				else {
+					right = mid - 1;
+				}
+			}
+
+			return rev ? -ans : ans;
+		}
+		#pragma endregion
+		#pragma region 30.串联所以单词的子串 (非自主)
+		vector<int> findSubstring(string s, vector<string>& words) {
+			vector<int> res;
+			int m = words.size(), n = words[0].size(), ls = s.size();
+			for (int i = 0; i < n && i + m * n <= ls; ++i) {
+				unordered_map<string, int> differ;
+				for (int j = 0; j < m; ++j) {
+					++differ[s.substr(i + j * n, n)];
+				}
+				for (string& word : words) {
+					if (--differ[word] == 0) {
+						differ.erase(word);
+					}
+				}
+				for (int start = i; start < ls - m * n + 1; start += n) {
+					if (start != i) {
+						string word = s.substr(start + (m - 1) * n, n);
+						if (++differ[word] == 0) {
+							differ.erase(word);
+						}
+						word = s.substr(start - n, n);
+						if (--differ[word] == 0) {
+							differ.erase(word);
+						}
+					}
+					if (differ.empty()) {
+						res.emplace_back(start);
+					}
+				}
+			}
+			return res;
+		}
+		#pragma endregion
 
 };
 
@@ -1051,6 +1163,11 @@ int main()
 		string s2 = "ad";
 		int ret = solution.strStr(s1, s2);
 		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 29.两数相除
+	{
+		cout << solution.divide(-2147483648, 2) << endl;
 	}
 #pragma endregion
 
