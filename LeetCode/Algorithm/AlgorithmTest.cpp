@@ -918,9 +918,59 @@ class Solution
 			return res;
 		}
 		#pragma endregion
-
+		#pragma region 31.下一个排列
+		void nextPermutation(vector<int>& nums) {
+			int small = nums.size() - 2;
+			while (small >= 0 && nums[small] >= nums[small + 1])
+			{
+				small--;
+			}
+			if (small >= 0)
+			{
+				int big = nums.size() - 1;
+				while (big >= 0 && nums[big] <= nums[small])
+				{
+					big--;
+				}
+				swap(nums[small], nums[big]);
+			}
+			int left = small + 1;
+			int right = nums.size() - 1;
+			while (left < right)
+			{
+				swap(nums[left++], nums[right--]);
+			}
+		}
+		#pragma endregion
+		#pragma region 32.最长有效括号 (非自主)
+		int longestValidParentheses(string s) 
+		{
+			int maxRet = 0;
+			stack<int> stk;
+			stk.push(-1);
+			for (int i = 0; i < s.length(); i++) 
+			{
+				if (s[i] == '(') 
+				{
+					stk.push(i);
+				}
+				else 
+				{
+					stk.pop();
+					if (stk.empty()) 
+					{
+						stk.push(i);
+					}
+					else 
+					{
+						maxRet = max(maxRet, i - stk.top());
+					}
+				}
+			}
+			return maxRet;
+		}
+		#pragma endregion
 };
-
 int main()
 {
 	Solution solution;
@@ -1168,6 +1218,34 @@ int main()
 #pragma region 29.两数相除
 	{
 		cout << solution.divide(-2147483648, 2) << endl;
+	}
+#pragma endregion
+#pragma region 30.串联所以单词的子串
+	{
+		string s = "barfoothefoobarman";
+		vector<string> words = { "bar","foo" };
+		vector<int> ret = solution.findSubstring(s, words);
+		for (int num : ret)
+		{
+			cout << num << " ";
+		}
+		cout << endl;
+	}
+#pragma endregion
+#pragma region 31.下一个排列
+	{
+		vector<int> nums = { 1,1,5 };
+		solution.nextPermutation(nums);
+		for (int num : nums)
+		{
+			cout << num << " ";
+		}
+		cout << endl;
+	}
+#pragma endregion
+#pragma region 32.最长有效括号
+	{
+		cout << solution.longestValidParentheses("");
 	}
 #pragma endregion
 
