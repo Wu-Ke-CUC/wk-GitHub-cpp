@@ -970,6 +970,32 @@ class Solution
 			return maxRet;
 		}
 		#pragma endregion
+		#pragma region 33.搜索旋转排序数组
+		int search(vector<int>& nums, int target) 
+		{
+			if (nums.empty())return -1;
+			int left = 0, right = nums.size() - 1, mid = right / 2;
+			if (target >= nums[left])
+			{
+				while (left <= mid)
+				{
+					if (nums[left] == target)return left;
+					else left++;
+				}
+				return -1;
+			}
+			if (target <= nums[right])
+			{
+				while (right > mid)
+				{
+					if (nums[right] == target)return right;
+					else right--;
+				}
+				return -1;
+			}
+		}
+		#pragma endregion
+
 };
 int main()
 {
@@ -1245,7 +1271,14 @@ int main()
 #pragma endregion
 #pragma region 32.最长有效括号
 	{
-		cout << solution.longestValidParentheses("");
+		cout << solution.longestValidParentheses("") << endl;;
+	}
+#pragma endregion
+#pragma region 33.搜索旋转排序数组
+	{
+		vector<int> nums = { 4,5,6,7,0,1,2 };
+		int ret = solution.search(nums, 0);
+		cout << ret << endl;
 	}
 #pragma endregion
 
