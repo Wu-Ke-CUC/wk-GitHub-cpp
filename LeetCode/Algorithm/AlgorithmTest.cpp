@@ -1035,6 +1035,96 @@ class Solution
 			return { -1,-1 };
 		}
 		#pragma endregion
+		#pragma region 35.搜索插入位置
+		int searchInsert(vector<int>& nums, int target) {
+			int left = 0, right = nums.size() - 1;
+			while (left <= right)
+			{
+				int mid = (left + right) / 2;
+				if (nums[mid] == target)
+				{
+					return mid;
+				}
+				else if (nums[mid] > target)
+				{
+					right = mid - 1;
+				}
+				else if (nums[mid] < target)
+				{
+					left = mid + 1;
+				}
+			}
+			return left;
+		}
+		#pragma endregion
+		#pragma region 36.有效的数独
+		bool isValidSudoku(vector<vector<char>>& board) {
+			//竖
+			for (int i = 0; i < 9; i++)
+			{
+				unordered_set<char> hashSet;
+				for (int j = 0; j < 9; j++)
+				{
+					if (board[i][j] > '0' && board[i][j] <= '9')
+					{
+						if (hashSet.count(board[i][j]))
+						{
+							return false;
+						}
+						else
+						{
+							hashSet.insert(board[i][j]);
+						}
+					}
+				}
+			}
+			//横
+			for (int i = 0; i < 9; i++)
+			{
+				unordered_set<char> hashSet;
+				for (int j = 0; j < 9; j++)
+				{
+					if (board[j][i] > '0' && board[j][i] <= '9')
+					{
+						if (hashSet.count(board[j][i]))
+						{
+							return false;
+						}
+						else
+						{
+							hashSet.insert(board[j][i]);
+						}
+					}
+				}
+			}
+			//九宫格
+			for (int a = 0; a < 9; a += 3)
+			{
+				for (int b = 0; b < 9; b += 3)
+				{
+					unordered_set<char> hashSet;
+					for (int i = 0; i < 3; i++)
+					{
+						for (int j = 0; j < 3; j++)
+						{
+							if (board[a + i][b + j] > '0' && board[a + i][b + j] <= '9')
+							{
+								if (hashSet.count(board[a + i][b + j]))
+								{
+									return false;
+								}
+								else
+								{
+									hashSet.insert(board[a + i][b + j]);
+								}
+							}
+						}
+					}
+				}
+			}
+			return true;
+		}
+		#pragma endregion
 
 };
 int main()
@@ -1319,6 +1409,12 @@ int main()
 		vector<int> nums = { 4,5,6,7,0,1,2 };
 		int ret = solution.search(nums, 0);
 		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 36.有效数独
+	{
+		vector<vector<char>> board;
+
 	}
 #pragma endregion
 
