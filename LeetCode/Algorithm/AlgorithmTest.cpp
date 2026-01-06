@@ -4,6 +4,7 @@
 #include<unordered_map>
 #include<algorithm>
 #include<stack>
+#include<string>
 using namespace std;
 struct ListNode {
 	int val;
@@ -1125,6 +1126,77 @@ class Solution
 			return true;
 		}
 		#pragma endregion
+		/*#pragma region 37.解数独
+		int line[9];
+		int column[9];
+		int block[3][3];
+		bool valid;
+		vector<pair<int, int>> spaces;
+
+		void flip(int i, int j, int digit) {
+			line[i] ^= (1 << digit);
+			column[j] ^= (1 << digit);
+			block[i / 3][j / 3] ^= (1 << digit);
+		}
+
+		void dfs(vector<vector<char>>& board, int pos) {
+			if (pos == spaces.size()) {
+				valid = true;
+				return;
+			}
+
+			auto [i, j] = spaces[pos];
+			int mask = ~(line[i] | column[j] | block[i / 3][j / 3]) & 0x1ff;
+			for (; mask && !valid; mask &= (mask - 1)) {
+				int digitMask = mask & (-mask);
+				int digit = __builtin_ctz(digitMask);
+				flip(i, j, digit);
+				board[i][j] = digit + '0' + 1;
+				dfs(board, pos + 1);
+				flip(i, j, digit);
+			}
+		}
+
+		void solveSudoku(vector<vector<char>>& board) {
+			memset(line, 0, sizeof(line));
+			memset(column, 0, sizeof(column));
+			memset(block, 0, sizeof(block));
+			valid = false;
+
+			for (int i = 0; i < 9; ++i) {
+				for (int j = 0; j < 9; ++j) {
+					if (board[i][j] == '.') {
+						spaces.emplace_back(i, j);
+					}
+					else {
+						int digit = board[i][j] - '0' - 1;
+						flip(i, j, digit);
+					}
+				}
+			}
+
+			dfs(board, 0);
+		}
+		#pragma endregion*/
+		#pragma region 38.外观数列
+		string countAndSay(int n) {
+			if (n == 1)return "1";
+			string behind = countAndSay(n - 1);
+			string ret = "";
+			for (int i = 0; i < behind.length(); i++)
+			{
+				char c = behind[i];
+				int num = 1;
+				while (c == behind[i + 1])
+				{
+					i++;
+					num++;
+				}
+				ret += to_string(num) + c;
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 int main()
@@ -1411,10 +1483,10 @@ int main()
 		cout << ret << endl;
 	}
 #pragma endregion
-#pragma region 36.有效数独
+#pragma region 38.外观数列
 	{
-		vector<vector<char>> board;
-
+		string ret = solution.countAndSay(5);
+		cout << ret << endl;
 	}
 #pragma endregion
 
