@@ -1197,6 +1197,57 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 39.组合总数
+		void dfs1(vector<int>& candidates, int target, vector<vector<int>>& ret, vector<int>& ele,int dep)
+		{
+			if (dep == candidates.size())return;
+			if (target == 0)
+			{
+				ret.push_back(ele);
+				return;
+			}
+			dfs1(candidates, target, ret, ele, dep + 1);
+			if (target - candidates[dep] >= 0)
+			{
+				ele.push_back(candidates[dep]);
+				dfs1(candidates, target - candidates[dep], ret, ele, dep);
+				ele.pop_back();
+			}
+		}
+		vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+			vector<vector<int>>ret;
+			vector<int>ele;
+			dfs1(candidates, target, ret, ele, 0);
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 40.组合总数2
+		void dfs2(vector<int>& candidates, int target, vector<vector<int>>& ret, vector<int>& ele, int dep)
+		{
+			if (target == 0)
+			{
+				ret.push_back(ele);
+				return;
+			}
+			for (int i = dep; i < candidates.size(); i++)
+			{
+				if (i > dep && candidates[i] == candidates[i - 1])
+					continue;
+				if (candidates[i] > target)
+					break;
+				ele.push_back(candidates[i]);
+				dfs2(candidates, target - candidates[i], ret, ele, i + 1);
+				ele.pop_back();
+			}
+		}
+		vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+			sort(candidates.begin(), candidates.end());
+			vector<vector<int>>ret;
+			vector<int>ele;
+			dfs2(candidates, target, ret, ele, 0);
+			return ret;
+		}
+		#pragma endregion
 
 };
 int main()
