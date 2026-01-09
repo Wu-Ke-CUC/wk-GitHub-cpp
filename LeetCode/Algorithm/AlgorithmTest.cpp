@@ -1248,6 +1248,50 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 41.缺失的第一个正数
+		int firstMissingPositive(vector<int>& nums) {
+			sort(nums.begin(), nums.end());
+			int ret = 1;
+			for (int i = 0; i < nums.size(); i++)
+			{
+				if (nums[i] <= 0)continue;
+				else if (i > 0 && nums[i] == nums[i - 1]) 
+				{
+					continue;
+				}
+				else if (ret == nums[i])
+				{
+					ret++;
+					continue;
+				}
+				return ret;
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 42.接雨水
+		int trap(vector<int>& height) {
+			int ret = 0;
+			int left = 0, right = height.size() - 1;
+			int leftMax = 0, rightMax = 0;
+			while (left < right)
+			{
+				leftMax = max(leftMax, height[left]);
+				rightMax = max(rightMax, height[right]);
+				if (leftMax < rightMax)
+				{
+					ret += leftMax - height[left];
+					left++;
+				}
+				else
+				{
+					ret += rightMax - height[right];
+					right--;
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 int main()
@@ -1537,6 +1581,20 @@ int main()
 #pragma region 38.外观数列
 	{
 		string ret = solution.countAndSay(5);
+		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 41.缺失的第一个正数
+	{
+		vector<int> nums = { 1,1,2,2,0 };
+		int ret = solution.firstMissingPositive(nums);
+		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 42.接雨水
+	{
+		vector<int> height = { 0,1,0,2,1,0,1,3,2,1,2,1 };
+		int ret = solution.trap(height);
 		cout << ret << endl;
 	}
 #pragma endregion
