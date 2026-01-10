@@ -1292,6 +1292,43 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 43.×Ö·û´®Ïà³Ë
+		void stringToIntArray(string s,int* array)
+		{
+			for (int i = 0; i < s.length(); i++)
+			{
+				array[s.length() - 1 - i] = s[i] - '0';
+			}
+		}
+		string multiply(string num1, string num2) {
+			if (num1 == "0" || num2 == "0")return "0";
+			int* a = new int[num1.length()];
+			int* b = new int[num2.length()];
+			int maxLen = num1.size() + num2.size();
+			int* nums = new int[maxLen] {0};
+			stringToIntArray(num1, a);
+			stringToIntArray(num2, b);
+			for (int i = 0; i < num1.length(); i++)
+			{
+				for (int j = 0; j < num2.length(); j++)
+				{
+					nums[i + j] += a[i] * b[j];
+					nums[i + j + 1] += nums[i + j] / 10;
+					nums[i + j] %= 10;
+				}
+			}
+			while (nums[maxLen - 1] == 0 && maxLen > 1)
+			{
+				maxLen--;
+			}
+			string ret = "";
+			for (int i = 1; i <= maxLen; i++)
+			{
+				ret += (nums[maxLen - i] + '0');
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 int main()
@@ -1595,6 +1632,14 @@ int main()
 	{
 		vector<int> height = { 0,1,0,2,1,0,1,3,2,1,2,1 };
 		int ret = solution.trap(height);
+		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 43.×Ö·û´®Ïà³Ë
+	{
+		string num1 = "103";
+		string num2 = "22";
+		string ret = solution.multiply(num1, num2);
 		cout << ret << endl;
 	}
 #pragma endregion
