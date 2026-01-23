@@ -1329,8 +1329,6 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
-		#pragma region 44.题目同十
-		#pragma endregion
 
 };
 int main()
@@ -1644,9 +1642,6 @@ int main()
 		string ret = solution.multiply(num1, num2);
 		cout << ret << endl;
 	}
-#pragma endregion
-#pragma region MyRegion
-
 #pragma endregion
 
 	return 0;
