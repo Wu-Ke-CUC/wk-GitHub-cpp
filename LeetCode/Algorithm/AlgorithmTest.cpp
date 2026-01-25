@@ -1378,6 +1378,46 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 47.全排列2
+		void dfs4(vector<vector<int>>& ret, vector<int>& output, int start, int end)
+		{
+			if (start == end)
+			{
+				ret.emplace_back(output);
+				return;
+			}
+			unordered_set<int> usedNum;
+			for(int i = start; i < end; i++)
+			{
+				if (usedNum.find(output[i]) != usedNum.end())continue;
+				usedNum.insert(output[i]);
+				swap(output[i], output[start]);
+				dfs4(ret, output, start + 1, end);
+				swap(output[i], output[start]);
+		    }
+		}
+		vector<vector<int>> permuteUnique(vector<int>& nums) 
+		{
+			vector<vector<int>> ret;
+			dfs4(ret, nums, 0, nums.size());
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 48.旋转图像
+		void rotate(vector<vector<int>>& matrix) 
+		{
+			int len = matrix.size();
+			vector<vector<int>> ret = matrix;
+			for (int i = 0; i < len; i++)
+			{
+				for (int j = 0; j < len; j++)
+				{
+					ret[j][len - 1 - i] = matrix[i][j];
+				}
+			}
+			matrix = ret;
+		}
+		#pragma endregion
 
 };
 int main()
@@ -1703,6 +1743,20 @@ int main()
 	{
 		vector<int> nums = { 1,2,3 };
 		vector<vector<int>> ret = solution.permute(nums);
+		for (auto array : ret)
+		{
+			for (auto num : array)
+			{
+				cout << num << " ";
+			}
+			cout << endl;
+		}
+	}
+#pragma endregion
+#pragma region 47.全排序2
+	{
+		vector<int> nums = { 0,0,0,0,1,9 };
+		vector<vector<int>> ret = solution.permuteUnique(nums);
 		for (auto array : ret)
 		{
 			for (auto num : array)
