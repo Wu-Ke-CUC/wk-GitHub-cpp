@@ -1418,6 +1418,41 @@ class Solution
 			matrix = ret;
 		}
 		#pragma endregion
+		#pragma region 49.×ÖÄ¸ÒìÎ»´Ê·Ö×é
+		vector<vector<string>> groupAnagrams(vector<string>& strs) {
+			unordered_map<string, vector<string>>mp;
+			for (int i = 0; i < strs.size(); i++)
+			{
+				string key = strs[i];
+				sort(key.begin(), key.end());
+				mp[key].push_back(strs[i]);
+			}
+			vector<vector<string>> ret;
+			for (auto it = mp.begin(); it != mp.end(); it++)
+			{
+				ret.push_back(it->second);
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 50.Pow(x,n)
+		double myPow(double x, int n) {
+			if (n == 0 && n < 0)return 0;
+			long long exp = n;
+			if (n < 0)
+			{
+				x = 1 / x; exp = -exp;
+			}
+			double ret = 1;
+			while (exp > 0)
+			{
+				if (exp & 1)ret *= x;
+				x *= x;
+				exp >>= 1;
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 int main()
