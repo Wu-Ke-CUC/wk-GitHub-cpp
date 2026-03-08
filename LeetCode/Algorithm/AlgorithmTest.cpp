@@ -1597,6 +1597,73 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 59.ÂİĞı¾ØÕó2
+		vector<vector<int>> generateMatrix(int n) {
+			vector<vector<int>> ret(n, vector<int>(n));
+			int top = 0, bottom = n - 1;
+			int left = 0, right = n - 1;
+			int num = 1;
+			while (top <= bottom && left <= right)
+			{
+				for (int i = left; i <= right; i++)
+				{
+					ret[top][i] = num++;
+				}
+				top++;
+				for (int i = top; i <= bottom; i++)
+				{
+					ret[i][right] = num++;
+				}
+				right--;
+				if (left <= right)
+				{
+					for (int i = right; i >= left; i--)
+					{
+						ret[bottom][i] = num++;
+					}
+					bottom--;
+				}
+				if (top <= bottom)
+				{
+					for (int i = bottom; i >= top; i--)
+					{
+						ret[i][left] = num++;
+					}
+					left++;
+				}
+			}
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 60.ÅÅÁĞĞòÁĞ
+		string getPermutation(int n, int k) {
+			vector<int> factorial(n);
+			factorial[0] = 1;
+			for (int i = 1; i < n; i++)
+			{
+				factorial[i] = factorial[i - 1] * i;
+			}
+			--k;
+			vector<int> valid(n + 1, 1);
+			string ret = "";
+			for (int i = 1; i <= n; i++)
+			{
+				int order = k / factorial[n - i] + 1;
+				for (int j = 1; j <= n; j++)
+				{
+					order -= valid[j];
+					if (order == 0)
+					{
+						ret += j + '0';
+						valid[j] = 0;
+						break;
+					}
+				}
+				k %= factorial[n - i];
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 int main()
@@ -1979,6 +2046,19 @@ int main()
 		string s = "a";
 		int ret = solution.lengthOfLastWord(s);
 		cout << ret << endl;
+	}
+#pragma endregion
+#pragma region 59.ÂİĞı¾ØÕó
+	{
+		vector<vector<int>> ret = solution.generateMatrix(4);
+		for (auto arr : ret)
+		{
+			for (int num : arr)
+			{
+				cout << num << ' ';
+			}
+			cout << endl;
+		}
 	}
 #pragma endregion
 
