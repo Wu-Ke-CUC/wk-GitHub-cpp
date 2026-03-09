@@ -1,17 +1,5 @@
-#include<iostream>
-using namespace std;
-
-#define PI 3.14
-
-class Circle
-{
-public:										//访问权限
-	int radius;								//属性
-	double getPerimeter() noexcept			//方法
-	{
-		return 2 * PI * radius;
-	}
-};
+#include "CircleHead.h"
+#include "PointHead.h"
 
 class Student
 {
@@ -82,8 +70,13 @@ bool CubeIsEqual(Cube cube1, Cube cube2) noexcept
 int main()
 {
 	Circle circle;							//实例化
-	circle.radius = 2;
-	cout << circle.getPerimeter() << endl;
+	Point point1;
+	Point point2;
+	point1.x = 0, point1.y = 0;
+	circle.cPoint = point1;
+	circle.radius = 5;
+	point2.x = 3, point2.y = 3;
+	cout << circle.getPerimeter() << " " << circle.pointIsInCircle(point1) << endl;
 
 	Student student = Student("ZhangSang", 18, 2026);
 	student.setId(2024);
