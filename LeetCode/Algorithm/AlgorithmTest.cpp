@@ -210,22 +210,22 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
-		#pragma region 7.整数反转
-		int reverse(int x) 
-		{
-			int ret = 0;
-			while (x)
-			{
-				if (ret > INT32_MAX / 10 || ret < INT32_MIN / 10)
-				{
-					return 0;
-				}
-				int digit = x % 10;
-				x /= 10;
-				ret = ret * 10 + digit;
-			}
-			return ret;
-		}
+		//#pragma region 7.整数反转
+		//int reverse(int x) 
+		//{
+		//	int ret = 0;
+		//	while (x)
+		//	{
+		//		if (ret > INT32_MAX / 10 || ret < INT32_MIN / 10)
+		//		{
+		//			return 0;
+		//		}
+		//		int digit = x % 10;
+		//		x /= 10;
+		//		ret = ret * 10 + digit;
+		//	}
+		//	return ret;
+		//}
 		#pragma endregion
 		#pragma region 8.atoi
 		int myAtoi(string s) {
@@ -1852,6 +1852,86 @@ class Solution
 			return ret;
 		}
 		#pragma endregion
+		#pragma region 67.二进制求和
+		string addBinary(string a, string b) {
+			string ret;
+			reverse(a.begin(), a.end());
+			reverse(b.begin(), b.end());
+			int n = max(a.size(), b.size()), carry = 0;
+			for (int i = 0; i < n; i++)
+			{
+				carry += i < a.size() ? (a[i] == '1') : 0;
+				carry += i < b.size() ? (b[i] == '1') : 0;
+				ret.push_back(carry % 2 ? '1' : '0');
+				carry /= 2;
+			}
+			if (carry)
+			{
+				ret.push_back('1');
+			}
+			reverse(ret.begin(), ret.end());
+			return ret;
+		}
+		#pragma endregion
+		#pragma region 68.文本左右对齐
+		vector<string> fullJustify(vector<string>& words, int maxWidth) {
+			vector<string> ret;
+			for (int start = 0; start < words.size();)
+			{
+				string temp;
+				int keyNum = 0;
+				int end = start;
+				while(end < words.size())
+				{
+					if (keyNum + words[end].size() + (end - start) <= maxWidth)
+					{
+						keyNum += words[end].size();
+						end++;
+					}
+					else break;
+				}
+				int spaceNum;
+				if (end - start == 1)spaceNum = maxWidth - keyNum;
+				else spaceNum = (maxWidth - keyNum) / (end - start - 1);
+				for (int i = 0; i < words[start].size(); i++)
+				{
+					temp.push_back(words[start][i]);
+				}
+				int spaceAdd = maxWidth - keyNum - spaceNum * (end - start - 1);
+				if (end == words.size())
+				{
+					spaceNum = 1;
+					spaceAdd = 0;
+				}
+				for (int i = start + 1; i < end; i++)
+				{
+					for (int j = 0; j < spaceNum; j++)
+					{
+						temp.push_back(' ');
+					}
+					if (spaceAdd > 0)
+					{
+						temp.push_back(' ');
+						spaceAdd--;
+					}
+					for (int k = 0; k < words[i].size(); k++)
+					{
+						temp.push_back(words[i][k]);
+					}
+				}
+				if (end - start == 1 || end == words.size())
+				{
+					for (int i = 0; i < maxWidth - keyNum - (end - start - 1); i++)
+					{
+						temp.push_back('!');
+					}
+				}
+				start = end;
+				ret.push_back(temp);
+			}
+			return ret;
+		}
+		#pragma endregion
 
 };
 int main()
@@ -1908,13 +1988,13 @@ int main()
 		cout << convertRet << endl;
 	}
 #pragma endregion
-#pragma region 7.整数反转
-	{
-		int reverse1 = solution.reverse(123);
-		int reverse2 = solution.reverse(INT32_MAX);
-		cout << reverse1 << " " << reverse2 << endl;
-	}
-#pragma endregion
+//#pragma region 7.整数反转
+//	{
+//		int reverse1 = solution.reverse(123);
+//		int reverse2 = solution.reverse(INT32_MAX);
+//		cout << reverse1 << " " << reverse2 << endl;
+//	}
+//#pragma endregion
 #pragma region 8.atoi
 	{
 		int atoi = solution.myAtoi("as-0123as");
@@ -2288,6 +2368,16 @@ int main()
 			cout << num;
 		}
 		cout<<endl;
+	}
+#pragma endregion
+#pragma region 68.文本左右对齐
+	{
+		vector<string> words = { "What","must","be","acknowledgment","shall","be" };
+		vector<string> ret = solution.fullJustify(words,16);
+		for (auto s : ret)
+		{
+			cout << s << endl;
+		}
 	}
 #pragma endregion
 
